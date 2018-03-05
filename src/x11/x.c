@@ -148,6 +148,12 @@ static void x_cairo_setup(void)
         cairo_ctx.desc = pango_font_description_from_string(settings.font);
 }
 
+cairo_surface_t *x_create_cairo_surface(void)
+{
+        return cairo_xlib_surface_create(xctx.dpy,
+                        xctx.win, DefaultVisual(xctx.dpy, 0), WIDTH, HEIGHT);
+}
+
 static void r_setup_pango_layout(PangoLayout *layout, int width)
 {
         pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
@@ -725,7 +731,7 @@ gboolean x_mainloop_fd_dispatch(GSource *source, GSourceFunc callback, gpointer 
                 switch (ev.type) {
                 case Expose:
                         if (ev.xexpose.count == 0 && xctx.visible) {
-                                x_win_draw();
+                                draw();
                         }
                         break;
                 case SelectionNotify:
@@ -790,7 +796,7 @@ gboolean x_mainloop_fd_dispatch(GSource *source, GSourceFunc callback, gpointer 
                          */
                                    && xctx.visible
                                    && get_active_screen()->scr != xctx.cur_screen) {
-                                x_win_draw();
+                                draw();
                         }
                         break;
                 default:
