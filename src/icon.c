@@ -139,7 +139,7 @@ GdkPixbuf *get_pixbuf_from_raw_image(const RawImage *raw_image)
         return pixbuf;
 }
 
-cairo_surface_t *icon_get_for_notification(notification *n)
+cairo_surface_t *icon_get_for_notification(const notification *n)
 {
         GdkPixbuf *pixbuf;
 
