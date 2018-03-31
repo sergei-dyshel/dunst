@@ -175,7 +175,7 @@ gboolean x_mainloop_fd_dispatch(GSource *source, GSourceFunc callback, gpointer 
 
                 switch (ev.type) {
                 case Expose:
-                        if (ev.xexpose.count == 0 && xctx.win.visible) {
+                        if (ev.xexpose.count == 0 && queues_length_displayed() > 0) {
                                 draw();
                         }
                         break;
@@ -237,7 +237,7 @@ gboolean x_mainloop_fd_dispatch(GSource *source, GSourceFunc callback, gpointer 
                          * same screen. PropertyNotify is only neccessary
                          * to detect a focus change to another screen
                          */
-                                   && xctx.win.visible
+                                   && queues_length_displayed() > 0
                                    && scr->id != xctx.win.cur_screen) {
                                 draw();
                                 xctx.win.cur_screen = scr->id;
@@ -495,11 +495,6 @@ static void x_win_setup(void)
  */
 void x_win_show(void)
 {
-        /* window is already mapped or there's nothing to show */
-        if (xctx.win.visible || queues_length_displayed() == 0) {
-                return;
-        }
-
         x_shortcut_grab(&settings.close_ks);
         x_shortcut_grab(&settings.close_all_ks);
         x_shortcut_grab(&settings.context_ks);
@@ -520,7 +515,6 @@ void x_win_show(void)
         }
 
         XMapRaised(xctx.dpy, xctx.win.xwin);
-        xctx.win.visible = true;
 }
 
 /*
@@ -535,7 +529,6 @@ void x_win_hide(void)
         XUngrabButton(xctx.dpy, AnyButton, AnyModifier, xctx.win.xwin);
         XUnmapWindow(xctx.dpy, xctx.win.xwin);
         XFlush(xctx.dpy);
-        xctx.win.visible = false;
 }
 
 /*

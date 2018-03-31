@@ -57,21 +57,17 @@ static gboolean run(void *data)
         queues_check_timeouts(x_is_idle(), fullscreen);
         queues_update(fullscreen);
 
-        static gint64 next_timeout = 0;
+        bool notif_avail = queues_length_displayed() > 0;
 
-        if (!xctx.win.visible && queues_length_displayed() > 0) {
-                x_win_show();
-        }
-
-        if (xctx.win.visible && queues_length_displayed() == 0) {
+        if (notif_avail) {
+                draw();
+        } else {
                 x_win_hide();
         }
 
-        if (xctx.win.visible) {
-                draw();
-        }
+        static gint64 next_timeout = 0;
 
-        if (xctx.win.visible) {
+        if (notif_avail) {
                 gint64 now = time_monotonic_now();
                 gint64 sleep = queues_get_next_datachange(now);
                 gint64 timeout_at = now + sleep;

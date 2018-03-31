@@ -37,7 +37,6 @@ typedef struct {
         Window xwin;
         cairo_surface_t *root_surface;
         int cur_screen;
-        bool visible;
         struct dimensions dim;
 } window_x11;
 
