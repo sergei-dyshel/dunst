@@ -969,7 +969,7 @@ static void x_handle_click(XEvent ev)
                 }
 
                 if (n) {
-                        if (ev.xbutton.button == Button1)
+                        if (ev.xbutton.button == Button2)
                                 queues_notification_close(n, REASON_USER);
                         else
                                 notification_do_action(n);
