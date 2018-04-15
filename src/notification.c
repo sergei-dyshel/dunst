@@ -564,6 +564,8 @@ void notification_do_action(notification *n)
                         open_browser(n->urls);
                 else
                         context_menu();
+        } else {
+                queues_notification_close(n, REASON_USER);
         }
 }
 
