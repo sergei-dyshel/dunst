@@ -387,6 +387,7 @@ void signal_action_invoked(notification *n, const char *identifier)
                 fprintf(stderr, "Unable to invoke action: %s\n", err->message);
                 g_error_free(err);
         }
+        queues_notification_close(n, REASON_USER);
 }
 
 static const GDBusInterfaceVTable interface_vtable = {
